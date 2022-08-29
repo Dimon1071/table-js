@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>js-table-project</title>
+  <link rel="stylesheet" href="/JSTABLE-master/assets/css/style.css">
+  <link rel="stylesheet" href="/JSTABLE-master/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/JSTABLE-master/assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/JSTABLE-master/assets/css/modal-window.css">
+  </script>
+</head>
+
+<body>
+  <button id="create">Создать пост</button>
+  <div id="showModal">
+    <div class="showModal">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div id="result"></div>
+            <div class="modal-header">
+              <h2>Новый пост</h2>
+            </div>
+            <div class="modal-body">
+              <h3>Заголовок: <input type="text" id="title" required></h3><br>
+              Автор статьи: <input type="text" id="author" required>
+              <h2>Контент:</h2><textarea class="modal-textarea" id="content"></textarea>
+            </div>
+            <div class="modal-footer">
+              <a id="close" class="btn btn-danger">Назад</a>
+              <a id="success" class="btn btn-success">Опубликовать</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table id="table" class="table">
+    <tbody>
+
+    </tbody>
+  </table>
+  <div id="test"></div>
+
+
+  <script src="/JSTABLE-master/assets/js/script.js"></script>
+</body>
+
+</html>

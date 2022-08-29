@@ -1,0 +1,88 @@
+body {
+    margin: 10px;
+    background: -webkit-linear-gradient(left, rgb(0, 100, 182), #7ce767ad); 
+    color: white;
+}
+
+.table {
+    color: rgba(54, 54, 54, 0.733) !important;
+    background: #ededed;
+    overflow:hidden;
+    border:5px solid #747070a4;
+    width: 98% !important;
+    list-style-type: none;
+    margin: 5% auto 0;
+    -moz-border-radius:5px; /* FF1+ */
+    -webkit-border-radius:5px; /* Saf3-4 */
+    border-radius:10px;
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    border-collapse: collapse;
+}
+
+button#create {
+    margin: 15px;
+    float: right;
+    display: inline-block;
+    color: white;
+    text-shadow: 1px 2px rgba(0, 0, 0, 0.253);
+    text-decoration: none;
+    padding: .4em 1em;
+    border-radius: 100px;
+    outline: none;
+    background: -webkit-linear-gradient(left, #b3a7a7, rgba(21, 190, 50, 0.658)); 
+    overflow: hidden;
+}
+
+button#create:after {
+  content: "+";
+  position: relative;
+  bottom: 0;
+  display: inline-block;
+  margin-left: 1.4em;
+  vertical-align: middle;
+  font-family: "Times","Times New Roman","serif","sans-serif","EmojiSymbols";
+  font-weight: 700;
+  font-size: 140%;
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+button#create:hover {
+  background: -webkit-linear-gradient(left, #b3a7a7a6, rgba(21, 190, 49, 0.445)); 
+}
+
+button#create:active:after {
+  bottom: -1.0em;
+  transition: .2s;
+}
+
+.showModal {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+.delete {
+    color: rgb(214, 11, 11);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th, td {
+    display: table-cell;
+    text-align: center;
+}
+
+#result {
+    width: 45%;
+    text-align: center !important;
+    position: absolute;
+    color: green;
+}
+
+input:valid {
+  border: 2px solid black;
+}

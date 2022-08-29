@@ -1,68 +1,56 @@
-(window.onload) = function() {
-
-    let modal = document.querySelector('.showModal'),  // модальное окно
-        btnCloseModal = document.getElementById('close'), // кнопки закрытия в модальном окне
-        create = document.getElementById('create'),  // кнопка вызова модального окна
-        modal1 = document.querySelector('.modal-wrapper') // для закрытия мод.окна
-
-    // функция показа мод.окна
-    function toggleModal() {
-        modal.classList.toggle('active')
+$(document).ready(function() {
+    
+    function toggle() {
+        $('#showModal').toggleClass('active')
     }
 
-    create.addEventListener('click', toggleModal) // вызов мод.окна по клику на кнопку "создать пост"
-    btnCloseModal.addEventListener('click', toggleModal)  // закрытие мод.окна 
-    
-    // закрытие мод.окна при клике на любую часть экрана, кроме мод.окна
-    modal1.addEventListener('click', (e) => {
-        if(e.target === modal1) {
-            toggleModal()
-        }
-    })
-    
-    // закрытие мод.окна при нажатии на копку "Escape"
-    document.addEventListener('keydown', (e) => {   
-        if(e.code === "Escape" && modal.classList.contains('active')) {  // условие: если кликнули на кнопку 
-            toggleModal() //  только тогда, когда открыто мод.окно
-        }
-    })
-    
-    // добавление поста:
-    let btnPublishPost = document.getElementById('success')  // кнопка "опубликовать"
-    let title = document.getElementById('title')  // поле "заголовок"
-    let author = document.getElementById('author')  // поле "автор"
-    let content = document.getElementById('content') // поле "контент"
-    let table = document.getElementById('table') // разметка поста в HTML
+    $('#create').on('click', toggle)
+    $('#close').on('click', toggle)
 
-    // добавление поста
+    //удаление по клику в любую часть экрана
+    $('#showModal').on('click', function (e) {     
+        if($('.modal-wrapper').has(e.target).length === 0) {
+            toggle()
+        }
+    })  
+
+    // закрытие мод.окна по кнопке esc
+    $(document).on('keydown', function(e) {
+        if(e.which === 27 && $('#showModal').hasClass('active')) {
+            toggle()
+        }
+    })
+
+    // добавление поста:
     function addPost() {
-        if (title.value && author.value && content.value) {
+       
+        let title = $('#title');
+        let author = $('#author');
+        let content = $('#content');
+
+        if(title.val(), author.val(), content.val()){  
             let newPost = {
                 id: 1,
-                title: title.value,
-                author: author.value,
-                content: content.value,
+                title: title.val(),
+                author: author.val(),
+                content: content.val(),
                 date: new Date().toLocaleTimeString()
             }
-
-            let posts = getPosts() // проверка: если в localStorage есть посты, то берем их по ключу(смотреть функцию getPosts)
+    
+            let posts = getPosts() // проверка; получение поста по ключу из LocalStorage
             
-            // если есть пост, то берем последний элемент(объект) в массиве и добавляем свойству id + 1 если массив пуст, то идем дальше
             if (posts && posts.length) {
                 newPost.id = posts[posts.length-1].id
                 newPost.id++
             }
-          
-            posts.push(newPost)
-            //после push удаляем содиржимое полей
-            title.value = ""
-            author.value = ""
-            content.value = ""
-            title.focus()
             
-            // сохраняем посты
+            posts.push(newPost);
+            
+            title.val("");   // очистка всех полей после push
+            author.val("");
+            content.val("");
+            
             savePosts(posts)
-            // помещаем разметку в HTML документ
             allPosts()
 
         } else {
@@ -70,33 +58,37 @@
         }
     }
 
-    function allPosts() {
+    function allPosts(table) {
+        let posts = getPosts()
+        $('#table > tbody').empty() // в чистом js это - innerHTML ""
 
-        let posts = getPosts() // проверка
-        
-        // добавление резметки в HTML документ
-        if (posts && posts.length) {
-            table.innerHTML = ""
-            posts.forEach((post) => {
-                table.innerHTML += `
-                    <tr class="promo__interactive-list">
-                        <td style="width: 2%;">${post.id}</td>
-                        <td style="width: 18%;">${post.title}</td>
-                        <td style="width: 40%;">${post.content}</td>
-                        <td style="width: 20%;">${post.author}</td>
-                        <td style="width: 18%;">${post.date}</td>
-                        <td style="width: 2%;"><button class="delete" onclick="deletePost(${post.id})">Удалить</button></td>
-                    </tr>`
-            })
-            
-        }
-        
+        posts.forEach(post => {
+            $('#table > tbody').append(`
+            <tr class="promo__interactive-list">
+                <td style="width: 2%;">${post.id}</td>
+                <td style="width: 18%;">${post.title}</td>
+                <td style="width: 40%;">${post.content}</td>
+                <td style="width: 20%;">${post.author}</td>
+                <td style="width: 18%;">${post.date}</td>
+                <td style="width: 2%;"><button class="delete" onclick="deletePost(${post.id})">Удалить</button></td>
+            </tr>`)
+        });
     }
-    allPosts() // вызываем в общем потоке, для отображение существующих постов при открытии стр
+    allPosts()
+   
+    function savePosts(posts) {
+        localStorage.setItem('posts', JSON.stringify(posts))
+    }
 
-    deletePost = (id) => {  // параметр передается в onclick при создании разметки (allposts)
+    function getPosts() {
+        let posts = []
+        !localStorage.posts ? posts = [] : posts = JSON.parse(localStorage.getItem('posts'))
+        return posts
+    }
+
+    deletePost = (id) => {  
         if(id) {
-            let posts = getPosts()  // проверка
+            let posts = getPosts()  
 
             // поиск по id
             let indexPostForDelete = posts.findIndex(post => {
@@ -105,31 +97,13 @@
             
             posts.splice(indexPostForDelete, 1) // удаление по id 
             
-            savePosts(posts)  // сохранение
+            savePosts(posts)  // сохранение 
+            $('#table > tbody').empty() 
+            allPosts()
 
-            table.innerHTML = "" 
-            
-            allPosts() 
-            
         }
-        
     }
-    
-    function getPosts() {
-        let posts = []
-        !localStorage.posts ? posts = [] : posts = JSON.parse(localStorage.getItem('posts'))
-        return posts
-    }
+          
+    $('#success').on('click', addPost)
 
-    function savePosts(posts) {
-        localStorage.setItem('posts', JSON.stringify(posts))
-    }
-
-    btnPublishPost.addEventListener('click', addPost)
-    modal.addEventListener('keydown', (e) => {
-        if(e.code === "Enter") {
-            addPost()
-        }
-    })
-
-}
+});

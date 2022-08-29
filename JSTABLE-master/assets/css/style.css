@@ -57,12 +57,12 @@ button#create:active:after {
   transition: .2s;
 }
 
-.showModal {
+#showModal {
   display: none;
 }
 
 .active {
-  display: block;
+  display: block !important;
 }
 
 .delete {
